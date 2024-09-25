@@ -1,38 +1,37 @@
 import random
 import sys
 import os
-import atexit
 
 def shutdown():
     if sys.platform.startswith('win'):
         os.system('shutdown /s /t 1')
-    elif sys.platform.startswith('linux'):
-        os.system('sudo shutdown -h now')
-    elif sys.platform.startswith('darwin'):
+    elif sys.platform.startswith('linux') or sys.platform.startswith('darwin'):
         os.system('sudo shutdown -h now')
     else:
-        print("Unknown operating system")
-
-atexit.register(shutdown)
+        print("Unknown operating system, unable to execute shutdown command")
 
 def guess_number():
     try:
         number = random.randint(1, 100)
-        print("Guess a number between 1-100. You have only one chance!")
+        print("I'm thinking of a number between 1 and 100. You have only one chance to guess it!")
 
         try:
             guess = int(input("Enter your guess: "))
 
             if guess == number:
-                print("You got it right!")
+                print(f"Congratulations! You guessed it correctly.")
             else:
-                print(f"Sorry, the correct number was {number}. Womp Womp")
+                print(f"Sorry, the correct number was {number}.")
+                print("WOMPWOMP")
+                shutdown()
         except ValueError:
-            print("Invalid input. Please enter a valid number.")
+            print("Please enter a valid number!")
+            print("WOMPWOMP")
+            shutdown()
     except Exception as e:
         print(f"Game error occurred: {e}")
-    finally:
-        atexit.unregister(shutdown)
+        print("WOMPWOMP")
+        shutdown()
 
 if __name__ == "__main__":
     guess_number()
